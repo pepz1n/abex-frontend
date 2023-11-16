@@ -8,4 +8,7 @@ definePageMeta({
   <div>
     Custom layout defined with <code>definePageMeta</code>
   </div>
+  <div>
+    <custom></custom>
+  </div>
 </template>
