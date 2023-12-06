@@ -10,7 +10,7 @@
           <v-list-item v-for="(item, index) in itemsMenu" :key="index" :prepend-icon="item.icon" :title="item.text"></v-list-item>
         </v-list>
         <div class="mt-auto">
-          <v-btn class="p-0 bg-transparent"  style="box-shadow: none;position: inherit; margin-bottom: 1%;">
+          <v-btn class="p-0 bg-transparent"  style="box-shadow: none;position: inherit; margin-bottom: 1%;" @click="logout">
             <v-icon class="mdi mdi-logout" style="transform: rotate(180deg) translateX(4px);"></v-icon>
             Sair
           </v-btn>
@@ -73,9 +73,12 @@
     methods: {
       async getPermissionUser(user) {
         return 'admin';
-      }
+      },
 
-      // asyn
+      logout() {
+        localStorage.clear();
+        this.$router.push({name: 'index'});
+      }
     },
 
     watch: {
