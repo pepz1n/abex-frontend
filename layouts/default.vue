@@ -7,7 +7,7 @@
           <li >
             {{ item }}
           </li>
-          <v-list-item v-for="(item, index) in itemsMenu" :key="index" :prepend-icon="item.icon" :title="item.text"></v-list-item>
+          <v-list-item @click="redirect(item.to)" v-for="(item, index) in itemsMenu" :key="index" :prepend-icon="item.icon" :title="item.text"></v-list-item>
         </v-list>
         <div class="mt-auto">
           <v-btn class="p-0 bg-transparent"  style="box-shadow: none;position: inherit; margin-bottom: 1%;" @click="logout">
@@ -15,7 +15,7 @@
             Sair
           </v-btn>
         </div>
-      </v-navigation-drawer>  
+      </v-navigation-drawer>
       <v-main style="min-height: 100vh;" class="text-left w-auto pt-3 pb-0 pr-0 pl-5">
         <slot />
       </v-main>
@@ -43,36 +43,46 @@
       drawer: false,
       group: null,
       itemsMenu: [
-          {'icon': "mdi-home" ,
-          'text': "Inicial",
-          'permission': 'user'
+          {
+            'icon': "mdi-home" ,
+            'text': "Inicial",
+            'permission': 'user'
           },
-          {'icon': "mdi-file" ,
-          'text': "Formulário",
-          'permission': 'user'
+          {
+            'icon': "mdi-file" ,
+            'text': "Formulário",
+            'permission': 'user'
           },
-          {'icon': "mdi-finance" ,
-          'text': "Gráficos",
-          'permission': 'admin'
+          {
+            'icon': "mdi-finance" ,
+            'text': "Gráficos",
+            'permission': 'admin'
           },
-          {'icon': "mdi-domain" ,
-          'text': "Instituições",
-          'permission': 'admin'
+          {
+            'icon': "mdi-domain" ,
+            'text': "Instituições",
+            'permission': 'admin',
+            'to': '/adm/institution'
           },
-          {'icon': "mdi-email-search" ,
-          'text': "Consulta de denúncias",
-          'permission': 'user'
+          {
+            'icon': "mdi-email-search" ,
+            'text': "Consulta de denúncias",
+            'permission': 'user'
           },
       ],
     }),
 
     created() {
-      
+
     },
 
     methods: {
       async getPermissionUser(user) {
         return 'admin';
+      },
+
+      redirect (to) {
+        this.$router.push(to)
       },
 
       logout() {

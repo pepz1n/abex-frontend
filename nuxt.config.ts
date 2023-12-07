@@ -17,6 +17,17 @@ const temaCustomizado = {
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  app: {
+    head: {
+      title: 'Controle de Violência',
+      meta: [
+        { name: 'description', content: 'Everything about - Nuxt-3' }
+      ],
+      link: [
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons' }
+      ]
+    }
+  },
   modules: [
     '@invictus.codes/nuxt-vuetify',
     '@nuxt/devtools',
