@@ -21,7 +21,7 @@ export default {
     showEdition: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   methods: {
     // async destroy(field) {

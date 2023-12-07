@@ -27,5 +27,24 @@ export default {
   name: "defaultfieldsPage",
   data() {
   },
+  methods: {
+    async persist(field) {
+      try {
+        // Se você quiser navegar para a página com base no ID do campo
+        if (field && field.id) {
+          return this.$router.push(`/adm/formulario/edit?id=${field.id}`);
+        }
+
+        // Se você quiser navegar para a página com um ID padrão (por exemplo, 1)
+        return this.$router.push(`/adm/formulario/edit`);
+      } catch (error) {
+        toast(`Ocorreu um erro, contate o administrador`, {
+          autoClose: 1000,
+          position: 'bottom-right',
+          theme: 'dark'
+        });
+      }
+    },
+  }
 };
 </script> 
