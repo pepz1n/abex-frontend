@@ -1,5 +1,5 @@
 <template>
-    faça sua pagina aqui
+    Pagina inicial
 </template>
 
 <script>

@@ -5,10 +5,10 @@
       <h1 v-if="denunciation.id" class="text-center pb-5">Edição denuncia</h1>
     </v-col>
     <v-col cols="10">
-      <ViewForm :denunciation="denunciation" :persist="{persist}" :showBtn="true"></ViewForm>
+      <ViewForm :denunciation="denunciation" :fieldsForm="fields"  :persist="{persist}" :showBtn="true"></ViewForm>
     </v-col>
   </v-row>
-</template>
+</template> 
 
 <script>
 import axios from 'axios';
@@ -22,19 +22,20 @@ export default {
       denunciation: {
         id: null,
         date: null,
-        status: null,
+        status: null,  
         createdUserId: null,
         responsibleUserId: null
       },
+      fields: []
     }
   },
 
-  created() {
+  async created() {
     if (this.$route.query && this.$route.query.id) {
       this.denunciation.id = this.$route.query.id;
       this.getDenunciation(this.denunciation.id)
     }
-  },
+  },  
   methods: {
     async persist() {
       try {
@@ -86,9 +87,10 @@ export default {
       }
     },
 
+    
     async getDenunciation(id) {
       try {
-        let denunciation = (await axios.get(`${import.meta.env.VITE_API_URL}/denunciation/persist/${id}/`)).data;
+        let denunciation = (await axios.get(`${import.meta.env.VITE_API_URL}/denunciation/${id}`)).data;
 
         if (denunciation.type != 'success') {
           return toast(denunciation.message, {
@@ -97,10 +99,92 @@ export default {
             theme: 'dark'
           });
         }
+        denunciation = denunciation.data
+        
+        denunciation.responsible_person = await this.getPerson(denunciation.responsibleUserId)
+        denunciation.responsible_person.institution = await this.getInstitution(denunciation.responsible_person.institutionId)
+        
+        denunciation.created_person = await this.getPerson(denunciation.createdUserId)
+        denunciation.created_person.institution = await this.getInstitution(denunciation.created_person.institutionId)
+        this.getFieldResponse(denunciation.id)
 
-        return this.denunciation = denunciation.data;
+        // atualiza a global
+        this.denunciation = denunciation
+        
       } catch (error) {
         toast(`Ocorreu um erro ao editar o registro, contate o administrador`, {
+          autoClose: 1000,
+          position: 'bottom-right',
+          theme: 'dark'
+        });
+      }
+    },
+    
+    async getPerson(id) {
+      try {
+        let person = (await axios.get(`${import.meta.env.VITE_API_URL}/person-account/${id}`)).data;
+
+        if (person.type != 'success') {
+          return toast(person.message, {
+            autoClose: 1000,
+            position: 'bottom-right',
+            theme: 'dark'
+          });
+        }
+
+        return person.data;
+      } catch (error) {
+        toast(`Ocorreu um erro ao editar o registro, contate o administrador`, {
+          autoClose: 1000,
+          position: 'bottom-right',
+          theme: 'dark'
+        });
+      }
+    },
+    async getInstitution(id) {
+      try {
+        let institution = (await axios.get(`${import.meta.env.VITE_API_URL}/institution/${id}`)).data;
+
+        if (institution.type != 'success') {
+          return toast(institution.message, {
+            autoClose: 1000,
+            position: 'bottom-right',
+            theme: 'dark'
+          });
+        }
+
+        return institution.data;
+      } catch (error) {
+        toast(`Ocorreu um erro ao editar o registro, contate o administrador`, {
+          autoClose: 1000,
+          position: 'bottom-right',
+          theme: 'dark'
+        });
+      }
+    },
+
+    async getFieldResponse(idDenunciation) {
+      // let fields = await this.getFields()
+      // let fieldsResponse = (await axios.get(`${import.meta.env.VITE_API_URL}/response-field/denunciation/${idDenunciation}`)).data.data;
+      // fields.forEach( e => {
+      //   // this.fields.push(e)
+      // })
+    },
+    
+    async setFieldResponse(idDenunciation) {
+      let fields = await this.getFields()
+      let fieldsResponse = await axios.get(`${import.meta.env.VITE_API_URL}/response-field/denunciation/${idDenunciation}`);
+      fields.forEach(async e => {
+      })
+    },
+
+    async getFields() {
+      try {
+        let response = await axios.get(`${import.meta.env.VITE_API_URL}/field`);
+        return response.data.data;
+      }
+      catch (error) {
+        toast(`Ocorreu um erro ao carregar a página, contate o administrador`, {
           autoClose: 1000,
           position: 'bottom-right',
           theme: 'dark'

@@ -59,12 +59,12 @@
             'permission': 'user',
             'to': '/adm/formulario'
           },
-          {
-            'icon': "mdi-finance" ,
-            'text': "Gráficos",
-            'permission': 'admin',
-            'to': '/'
-          },
+          // {
+          //   'icon': "mdi-finance" ,
+          //   'text': "Gráficos",
+          //   'permission': 'admin',
+          //   'to': '/'
+          // },
           {
             'icon': "mdi-domain" ,
             'text': "Instituições",
