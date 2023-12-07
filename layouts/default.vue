@@ -7,7 +7,7 @@
           <li >
             {{ item }}
           </li>
-          <v-list-item v-for="(item, index) in itemsMenu" :key="index" :prepend-icon="item.icon" :title="item.text"></v-list-item>
+          <v-list-item class="text-grey-lighten-5" :to="item.to" v-for="(item, index) in itemsMenu" :key="index" :prepend-icon="item.icon" :title="item.text"></v-list-item>
         </v-list>
         <div class="mt-auto">
           <v-btn class="p-0 bg-transparent"  style="box-shadow: none;position: inherit; margin-bottom: 1%;" @click="logout">
@@ -24,7 +24,7 @@
 
 </template>
 
-<style>
+<style scoped>
 .sidebar {
   background-color: aliceblue;
 }
@@ -35,6 +35,11 @@
   height: 100vh;
 }
 
+.v-list-item-title, a.v-list-item.text-transparent{
+  color: #fff !important;
+  background-color: red;
+}
+
 </style>
 
 <script>
@@ -43,25 +48,35 @@
       drawer: false,
       group: null,
       itemsMenu: [
-          {'icon': "mdi-home" ,
-          'text': "Inicial",
-          'permission': 'user'
+          {
+            'icon': "mdi-home" ,
+            'text': "Inicial",
+            'permission': 'user',
+            'to': '/'
           },
-          {'icon': "mdi-file" ,
-          'text': "Formulário",
-          'permission': 'user'
+          {
+            'icon': "mdi-file" ,
+            'text': "Formulário",
+            'permission': 'user',
+            'to': '/adm/formulario'
           },
-          {'icon': "mdi-finance" ,
-          'text': "Gráficos",
-          'permission': 'admin'
+          {
+            'icon': "mdi-finance" ,
+            'text': "Gráficos",
+            'permission': 'admin',
+            'to': '/'
           },
-          {'icon': "mdi-domain" ,
-          'text': "Instituições",
-          'permission': 'admin'
+          {
+            'icon': "mdi-domain" ,
+            'text': "Instituições",
+            'permission': 'admin',
+            'to': '/'
           },
-          {'icon': "mdi-email-search" ,
-          'text': "Consulta de denúncias",
-          'permission': 'user'
+          {
+            'icon': "mdi-email-search" ,
+            'text': "Denúncias",
+            'permission': 'user',
+            'to': '/denuncias'
           },
       ],
     }),
