@@ -1,12 +1,12 @@
 <template>
   <v-section>
     <v-row>
-      <ViewField v-for="item in fields" fieldsForm.push(item)  :showEdition="showEdition" :field="item" />
+      <ViewField v-for="item in fields" :showEdition="showEdition" :field="item" />
       <v-col cols="12" v-if="showBtn">
         <v-btn :to="()=>this.$router.push('/')" class="warning">Cancelar</v-btn>
         <v-btn @click="persist.persist(denunciation)" class="success">Salvar</v-btn>
       </v-col>
-    </v-row> 
+    </v-row>
   </v-section>
 </template>
 
@@ -35,21 +35,23 @@ export default {
       type: Object,
       default: {}
     },
-    persist: { 
-      default: {persist: ()=>{}}
-    },
     fieldsForm: {
       type: Array,
       default: []
+    },
+    persist: { 
+      default: {persist: ()=>{}}
     }
   },
-
+  
   methods: {
     async getFields() {
       try {
         let response = await axios.get(`${import.meta.env.VITE_API_URL}/field`);
         this.fields = response.data.data;
-      } catch (error) {
+      } 
+      catch (error) {
+        console.log(error)
         toast(`Ocorreu um erro ao carregar a página, contate o administrador`, {
           autoClose: 1000,
           position: 'bottom-right',
@@ -59,7 +61,7 @@ export default {
     },
   },
   mounted() {
-    this.getFields();
-  },
+    this.getFields() 
+  }, 
 };
 </script>
