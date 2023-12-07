@@ -90,7 +90,7 @@
                     <v-row>
                       <v-col>
                         <v-text-field
-                          v-model="requisicao.responsavel.email"
+                          v-model="requisicao.responsavel.documentNumber"
                           type="email"
                           variant="outlined"
                           label="Email do Responsável"
@@ -101,6 +101,7 @@
                     <v-row class="mt-n6">
                       <v-col>
                         <v-text-field
+                          v-model="requisicao.responsavel.email"
                           type="email"
                           variant="outlined"
                           label="Email do Responsável"
@@ -120,11 +121,83 @@
                   </v-window-item>
 
                   <v-window-item value="two">
-                    Two
+                    <v-row>
+                      <v-col>
+                        <v-text-field
+                          v-model="requisicao.instituicao.name"
+                          variant="outlined"
+                          label="Nome da Instituição"
+                          placeholder="Nome da Instituição"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col>
+                        <v-text-field
+                          v-model="requisicao.instituicao.documentNumber"
+                          variant="outlined"
+                          label="CNPJ"
+                          placeholder="CNPJ"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
                   </v-window-item>
 
                   <v-window-item value="three">
-                    Three
+                    <v-row>
+                      <v-col>
+                        <v-text-field
+                          v-model="requisicao.endereco.country"
+                          variant="outlined"
+                          label="País"
+                          placeholder="País"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col>
+                        <v-text-field
+                          v-model="requisicao.endereco.state"
+                          variant="outlined"
+                          label="Estado"
+                          placeholder="Estado"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col>
+                        <v-text-field
+                          v-model="requisicao.endereco.postalCode"
+                          variant="outlined"
+                          label="CEP"
+                          placeholder="CEP"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col>
+                        <v-text-field
+                          v-model="requisicao.endereco.city"
+                          variant="outlined"
+                          label="Cidade"
+                          placeholder="Cidade"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col>
+                        <v-text-field
+                          v-model="requisicao.endereco.neighborhood"
+                          variant="outlined"
+                          label="Bairro"
+                          placeholder="Bairro"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col>
+                        <v-text-field
+                          v-model="requisicao.endereco.street"
+                          variant="outlined"
+                          label="Rua"
+                          placeholder="Rua"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
                   </v-window-item>
                 </v-window>
               </v-container>
@@ -142,7 +215,7 @@
                 v-if="tab === 2"
                 color="blue-darken-1"
                 variant="tonal"
-                @click="dialog = false"
+                @click="persist"
               >
                 Save
               </v-btn>
@@ -175,6 +248,18 @@
             email: null,
             username: null,
             documentNumber: null,
+          },
+          instituicao: {
+            name: null,
+            documentNumber: null,
+          },
+          endereco: {
+            country: null,
+            state: null,
+            city: null,
+            neighborhood: null,
+            street: null,
+            postalCode: null,
           }
         },
         dialog: false,
@@ -192,11 +277,6 @@
             align: 'start',
             key: 'name'
           },
-          {
-            title: 'Bairro',
-            align: 'start',
-            key: 'neighborhood',
-          }
         ]
       }
     },
@@ -208,7 +288,20 @@
     methods: {
       async getAll() {
         try {
-          this.items = await $fetch('http://localhost:3333/institution')
+          this.items = await $fetch('http://localhost:3333/institution').then(a => JSON.parse(JSON.stringify(a)).data);
+          console.log(this.items);
+        } catch (error) {
+          console.log(error);
+        }
+      },
+
+      async persist() {
+        try {
+          this.response = await $fetch('http://localhost:3333/institution/persist', {
+            method: 'post',
+            body: this.requisicao,
+          });
+          await this.getAll()
         } catch (error) {
           console.log(error);
         }
